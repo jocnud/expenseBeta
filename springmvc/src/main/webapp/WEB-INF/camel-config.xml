@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd	
+	 http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+	  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<camel:camelContext id="email" trace="false">
+		<camel:contextScan />
+
+		<camel:dataFormats>
+			<camel:xmljson id="xmljson" />
+			<camel:xmljson id="xmljsonWithOptions" forceTopLevelObject="true"
+				trimSpaces="true" rootName="newRoot" skipNamespaces="true"
+				removeNamespacePrefixes="true" expandableProperties="d e" />
+		</camel:dataFormats>
+
+		<camel:route>
+			<camel:from
+				uri="imaps://imap.gmail.com?username=jocnud@gmail.com&amp;password=27thsep2006&amp;delete=false&amp;unseen=true" />
+			<camel:process ref="sendMail" />
+		</camel:route>
+
+
+		<!-- <camel:route> <camel:from uri="timer://foo?fixedRate=true&amp;period=6000" 
+			/> <camel:process ref="sendMail" /> </camel:route> -->
+	</camel:camelContext>
+
+	<bean id="sendMail" class="com.shahbaz.blog.springmvc.EmailProcessor" />
+
+
+
+</beans>

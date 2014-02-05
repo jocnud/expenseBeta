@@ -27,7 +27,7 @@ public class App {
 		try {
 
 			BufferedReader br = new BufferedReader(new FileReader(
-					"./expense.txt"));
+					"expense.txt"));
 
 			// convert the json string back to object
 			ExpenseDay obj = gson.fromJson(br, ExpenseDay.class);

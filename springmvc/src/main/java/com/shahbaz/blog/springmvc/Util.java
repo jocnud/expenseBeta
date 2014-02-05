@@ -1,24 +1,51 @@
 package com.shahbaz.blog.springmvc;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.springframework.stereotype.Service;
-
-
 public class Util {
 
 	public static void main(String[] args) {
 
-		System.out.println(compareDate(stringToDate("dd MMM, yyyy HH:mm:ss a",
-				"5 Feb, 2014 8:04:44 PM")));
+		System.out.println(System.getProperty("user.dir"));
+
+		String currentDirectory = System.getProperty("user.dir");
+		String folderName = "expFolder";
+		System.out.println(File.separator);
+		String workingDirectory = currentDirectory + File.separator
+				+ folderName;
+
+		File folder = new File(workingDirectory);
+		if (!folder.exists()) {
+			if (folder.mkdir()) {
+				System.out.println("Directory is created!");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
+
+		File file = new File(folder.getAbsolutePath() + File.separator
+				+ "expense.txt");
+
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 	}
 
 	/**
 	 * Compare date if date is same return true else false
+	 * 
 	 * @param sent
 	 * @return
 	 */

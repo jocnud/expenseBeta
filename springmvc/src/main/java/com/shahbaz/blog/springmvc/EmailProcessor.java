@@ -1,6 +1,5 @@
 package com.shahbaz.blog.springmvc;
 
-import java.awt.List;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,15 +14,21 @@ import com.google.gson.Gson;
 
 public class EmailProcessor implements Processor {
 
+	File folder = null;
+
+	File file = null;
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
 
 		boolean isEmailTodays = true;
 
+		intializeProject();
+
 		System.out.println(" Inside the processor ");
 		try {
 
-			File expenseFile = new File("/WEB-INF/expense.txt");
+
 
 			Message message = exchange.getIn();
 
@@ -60,7 +65,7 @@ public class EmailProcessor implements Processor {
 			String data = gson.toJson(expenseDay);
 			System.out.println(data);
 
-			FileWriter writer = new FileWriter(expenseFile, true);
+			FileWriter writer = new FileWriter(file, true);
 			writer.write(data + "\n");
 			writer.close();
 
@@ -70,5 +75,37 @@ public class EmailProcessor implements Processor {
 			System.out.println(e);
 		}
 
+	}
+
+	public void intializeProject() {
+		System.out.println(System.getProperty("user.dir"));
+
+		String currentDirectory = System.getProperty("user.dir");
+		String folderName = "expFolder";
+		System.out.println(File.separator);
+		String workingDirectory = currentDirectory + File.separator
+				+ folderName;
+
+		folder = new File(workingDirectory);
+		if (!folder.exists()) {
+			if (folder.mkdir()) {
+				System.out.println("Directory is created!");
+			} else {
+				System.out.println("Failed to create directory!");
+			}
+		}
+
+		file = new File(folder.getAbsolutePath() + File.separator
+				+ "expense.txt");
+
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -23,7 +23,7 @@ public class EmailProcessor implements Processor {
 		System.out.println(" Inside the processor ");
 		try {
 
-			File expenseFile = new File("springmvc/expense.txt");
+			File expenseFile = new File("/WEB-INF/expense.txt");
 
 			Message message = exchange.getIn();
 

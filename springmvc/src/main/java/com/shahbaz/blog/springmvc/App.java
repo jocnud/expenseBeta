@@ -3,6 +3,9 @@ package com.shahbaz.blog.springmvc;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
@@ -17,37 +21,86 @@ import com.google.gson.Gson;
 @RequestMapping("/")
 public class App {
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String printWelcome(ModelMap model) {
+	ArrayList<Expense> expenseList = null;
+
+	@RequestMapping(value = "/rest/expense", method = RequestMethod.GET)
+	@ResponseBody
+	public ExpenseDay printWelcome(ModelMap model) {
 
 		System.out.println("Controler ");
 
+		String expenseFilePath = Util.intializeProject();
+
 		Gson gson = new Gson();
+
+		ExpenseDay expenseDay = new ExpenseDay();
 
 		try {
 
 			BufferedReader br = new BufferedReader(new FileReader(
-					"/WEB-INF/expense.txt"));
+					expenseFilePath));
 
-			// convert the json string back to object
-			ExpenseDay obj = gson.fromJson(br, ExpenseDay.class);
-			
-			System.out.println("1------------  "+obj.getCurrentDate());
-			System.out.println("2------------  "+obj.getListExpense().get(0).getCategory());
-			
-			
-			
+			String fileContent = new Scanner(br).useDelimiter("\\Z").next();
 
-			System.out.println(obj);
+			expenseList = new ArrayList<Expense>();
+
+			String singleRecordArr[] = fileContent.split("\n");
+
+			for (String s : singleRecordArr) {
+				System.out.println(s + "\n\n\n");
+				Expense expense = gson.fromJson(s, Expense.class);
+				expenseList.add(expense);
+			}
+
+			expenseDay.setListExpense(expenseList);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return "hello";
+		return expenseDay;
 
 	}
 
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String display(ModelMap model) {
+
+		model.addAttribute("url", "ass");
+		return "hello";
+	}
+
+	@RequestMapping(value = "/find", method = RequestMethod.GET)
+	@ResponseBody
+	public ExpenseDay findExpense(ModelMap model) {
+
+		
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ExpenseDay expenseDay = restTemplate.getForObject(
+				"http://localhost:8080/springmvc/rest/expense",
+				ExpenseDay.class);
+		System.out.println(" inside find exp ");
+
+		
+		
+		Expense e = expenseDay.getListExpense().get(0);
+		String str="[ { y : 'Home', a : 100}, { y : 'Ciggrate', a : 75, b : 65 } ]";
+		model.addAttribute("test1", str+"Helo there ");
+		return expenseDay;
+
+	}
+
+	/**
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 * @return
+	 */
 	@RequestMapping(value = "findname", method = RequestMethod.GET)
 	@ResponseBody
 	public ResTApiSample resTApiSample(

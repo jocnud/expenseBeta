@@ -6,18 +6,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
-import org.springframework.web.client.RestTemplate;
+import org.jolokia.client.J4pClient;
+import org.jolokia.client.request.J4pReadRequest;
+import org.jolokia.client.request.J4pReadResponse;
+
+
 
 public class Util {
 
 	public static void main(String[] args) {
+		
+		try{
 
-		RestTemplate restTemplate = new RestTemplate();
-		ExpenseDay expenseDay = restTemplate.getForObject(
-				"http://localhost:8080/springmvc/", ExpenseDay.class);
-		
-		
+        J4pClient j4pClient = new J4pClient("http://localhost:8080/springmvc/jolokia");
+        J4pReadRequest req = new J4pReadRequest("org.apache.camel:type=routes,*","CamelId");
+        J4pReadResponse resp = j4pClient.execute(req);
+       System.out.println(resp.asJSONObject());
+		}catch(Exception e){
+			System.out.println(e);
+		}
 		
 	}
 

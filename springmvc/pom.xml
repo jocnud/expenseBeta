@@ -11,6 +11,7 @@
 	<properties>
 		<spring.version>4.0.0.RELEASE</spring.version>
 		<camel.version>2.10.2</camel.version>
+		<jolokia.version>1.1.5</jolokia.version>
 	</properties>
 
 	<dependencies>
@@ -41,6 +42,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>1.2.1.RELEASE</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.4</version>
@@ -69,7 +77,7 @@
 			<artifactId>camel-xmljson</artifactId>
 			<version>${camel.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -83,7 +91,24 @@
 		</dependency>
 
 
-		
+		<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-core</artifactId>
+			<version>${jolokia.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-client-javascript</artifactId>
+			<version>1.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jolokia</groupId>
+			<artifactId>jolokia-client-java</artifactId>
+			<version>1.1.5</version>
+		</dependency>
+
+
 
 	</dependencies>
 
@@ -93,8 +118,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 		</plugins>

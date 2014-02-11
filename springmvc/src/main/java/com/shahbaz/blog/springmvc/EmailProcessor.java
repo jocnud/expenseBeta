@@ -43,6 +43,7 @@ public class EmailProcessor implements Processor {
 			String subjectData[] = expenseEmail.getSubject().split("#");
 
 			for (String s : subjectData) {
+				System.out.println(s.split(":")[0]+"        "+s.split(":")[1]+"        "+s.split(":")[2]);
 				Expense expense = new Expense();
 				expense.setCategory(s.split(":")[0]);
 				expense.setMoney(Long.parseLong(s.split(":")[1]));

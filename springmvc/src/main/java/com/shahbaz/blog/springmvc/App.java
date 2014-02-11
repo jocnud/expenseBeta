@@ -42,6 +42,8 @@ public class App {
 
 			String fileContent = new Scanner(br).useDelimiter("\\Z").next();
 
+			System.out.println(fileContent);
+			
 			expenseList = new ArrayList<Expense>();
 
 			String singleRecordArr[] = fileContent.split("\n");
@@ -54,8 +56,8 @@ public class App {
 
 			expenseDay.setListExpense(expenseList);
 
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 
 		return expenseDay;
